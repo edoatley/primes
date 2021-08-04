@@ -1,5 +1,4 @@
-# This workflow will build a Java project with Gradle
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+# This workflow will build the Java project with Gradle and generate a jacoco badge
 
 name: Java CI with Gradle
 
@@ -23,5 +22,15 @@ jobs:
         distribution: 'adopt'
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build -x test
+      
+    - name: Run Tests with Gradle
+      run: ./gradlew test jacocoTestReport
+
+    - name: Generate JaCoCo Badge
+      uses: cicirello/jacoco-badge-generator@v2
+      with:
+        generate-branches-badge: true
+        jacoco-csv-file: build/reports/jacoco/jacoco.csv
