@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version "$springBootVersion"
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'com.edoatley'
@@ -19,4 +20,16 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+jacocoTestReport {
+	dependsOn test
+	sourceSets sourceSets.main
+	executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+	reports {
+		xml.enabled false
+		csv.enabled true
+		html.destination file("${buildDir}/reports/jacoco/Html")
+		csv.destination file("${buildDir}/reports/jacoco/jacoco.csv")
+	}
 }
