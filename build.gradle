@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'jacoco'
+	id 'io.freefair.lombok' version '6.1.0-m3'
 }
 
 group = 'com.edoatley'
@@ -19,7 +20,7 @@ dependencies {
 	testImplementation 'io.projectreactor:reactor-test'
 }
 
-test {
+tasks.withType(Test) {
 	useJUnitPlatform()
 }
 
@@ -35,52 +36,9 @@ jacocoTestReport {
 	}
 }
 
-task printCP() {
-	doLast {
-		def origCP = sourceSets.main.runtimeClasspath
-		def updCP = 	sourceSets.main.runtimeClasspath
-		updCP += file("$System.env.RANDOOP_JAR")
-//		updCP.plus(file("$System.env.RANDOOP_JAR"))
-		println "Orig CP " + origCP.join(' ')
-		println "Upda CP " + updCP.join(' ')
-	}
+task generateUnitTests(type: Exec) {
+    def classToGenerateTestsFor =  'com.edoatley.primes.generator.BruteForcePrimeGenerator'
+	def javaClassPath = sourceSets.main.runtimeClasspath.join(':')
+	executable './scripts/randoop.sh'
+	args = [javaClassPath, classToGenerateTestsFor]
 }
-
-//task randoopGenerateTests(type: JavaExec) {
-//	def files = new ArrayList<Object>()
-//	sourceSets.main.runtimeClasspath.forEach({ files.add(it) })
-////	files.add(file("$System.env.RANDOOP_JAR"))
-////	classpath = sourceSets.main.runtimeClasspath
-////	classpath += file("$System.env.RANDOOP_JAR")
-//	classpath = ProjectLayout.files(*files)
-//	mainClass = 'randoop.main.Main'
-//	args = ['gentests', '--testclass=com.edoatley.primes.generator.BruteForcePrimeGenerator', '--timeLimit=10']
-//}
-//
-//task RandoopGenerateL1Tests() {
-//	group = "Verification"
-//	description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-//
-//	//Various setup things here...
-//
-//	doLast {
-//		javaexec {
-//			classpath = sourceSets.main.runtimeClasspath
-//			classpath = ConfigurableFileCollection.
-//
-//			systemProperty 'RANDOOP_PATH', "$System.env.RANDOOP_PATH"
-//			systemProperty 'RANDOOP_JAR', "$System.env.RANDOOP_JAR"
-//
-////			def classlistarg = '--classlist=' + classlistfilepath
-//			def classlistarg = '--testclass=com.edoatley.primes.generator.BruteForcePrimeGenerator'
-//			def packagenamearg = '--junit-package-name=com.edoatley.primes.randoop'
-//			def junitoutputdirarg = '--junit-output-dir=' + projectDir.path + '/src/randooptest/java'
-//			def timelimitarg = '--timeLimit=10'
-//
-//			main = 'randoop.main.Main'
-//			args ['gentests',classlistarg,packagenamearg,junitoutputdirarg,timelimitarg]
-//
-//			println "Randoop will be invoked with args: " + args.toString()
-//		}
-//	}
-//}
