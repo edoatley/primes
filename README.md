@@ -7,6 +7,9 @@ Current repo state:
 
 ## What to do
 
-- [ ] Complete tests for BruteForce
+- [x] Complete tests for BruteForce
+- [ ] Simple REACTIVE interface
 - [ ] Randoop to see what tests are generated
-- [ ] Java MicroBenchMarking
+- [ ] Java Micro Bench Marking 
+- [ ] Better prime generator
+- [ ] Other test generators

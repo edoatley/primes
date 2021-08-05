@@ -3,22 +3,24 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'jacoco'
+	id 'io.freefair.lombok' version '6.1.0-m3'
 }
 
 group = 'com.edoatley'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+	implementation "org.springframework.boot:spring-boot-starter-webflux:$springBootVersion"
 	testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+	testImplementation 'io.projectreactor:reactor-test'
 }
 
-test {
+tasks.withType(Test) {
 	useJUnitPlatform()
 }
 
@@ -32,4 +34,11 @@ jacocoTestReport {
 		html.destination file("${buildDir}/reports/jacoco/Html")
 		csv.destination file("${buildDir}/reports/jacoco/jacoco.csv")
 	}
+}
+
+task generateUnitTests(type: Exec) {
+    def classToGenerateTestsFor =  'com.edoatley.primes.generator.BruteForcePrimeGenerator'
+	def javaClassPath = sourceSets.main.runtimeClasspath.join(':')
+	executable './scripts/randoop.sh'
+	args = [javaClassPath, classToGenerateTestsFor]
 }

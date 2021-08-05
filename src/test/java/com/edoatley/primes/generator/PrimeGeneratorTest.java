@@ -42,6 +42,16 @@ public class PrimeGeneratorTest {
     }
 
     @Test
+    void givenAFourDigitRangeThatHasAPrimeReturnIt() {
+        int min = 1556;
+        int max = 1560;
+
+        List<Integer> primes = generator.primesInRange(min, max);
+
+        assertThat(primes).containsExactly(1559);
+    }
+
+    @Test
     void givenOneTo10RangeReturnCorrectly2357() {
         int min = 1;
         int max = 10;
