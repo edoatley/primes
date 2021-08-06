@@ -1,4 +1,4 @@
-package com.edoatley.primes.randoop;
+package com.edoatley.primes.generated;
 
 import com.edoatley.primes.generator.BruteForcePrimeGenerator;
 import org.junit.jupiter.api.Assertions;
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class BruteForcePrimeGeneratorRegressionTest {
+public class BruteForcePrimeGeneratorRandoopTest {
 
     @Test
     public void test001() throws Throwable {
