@@ -8,11 +8,10 @@ pipelines:
           caches:
             - gradle
           script:
-            - gradle build
+            - gradlew clean build
           after-script:
             - pipe: atlassian/checkstyle-report:0.2.0
       - step:
           name: Security Scan
           script:
             - pipe: atlassian/git-secrets-scan:0.4.3
-
