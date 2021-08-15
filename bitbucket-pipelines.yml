@@ -1,17 +1,17 @@
-image: gradle:6.6.0
+image: openjdk:11
 
 pipelines:
   default:
     - parallel:
-      - step:
-          name: Build and Test
-          caches:
-            - gradle
-          script:
-            - ./gradlew clean build
-          after-script:
-            - pipe: atlassian/checkstyle-report:0.2.0
-      - step:
-          name: Security Scan
-          script:
-            - pipe: atlassian/git-secrets-scan:0.4.3
+        - step:
+            name: Build and Test
+            caches:
+              - gradle
+            script:
+              - ./gradlew clean build
+            after-script:
+              - pipe: atlassian/checkstyle-report:0.2.0
+        - step:
+            name: Security Scan
+            script:
+              - pipe: atlassian/git-secrets-scan:0.4.3
