@@ -37,4 +37,13 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+tasks.getByName<JacocoReport>("jacocoTestReport") {
+    reports {
+        xml.required.set(true)
+        csv.required.set(true)
+    }
+}
 
+tasks.getByName("test") {
+    finalizedBy("jacocoTestReport") // report is always generated after tests run
+}
