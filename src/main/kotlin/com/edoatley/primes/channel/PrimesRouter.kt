@@ -1,27 +1,24 @@
-package com.edoatley.primes.channel;
+package com.edoatley.primes.channel
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
-import org.springframework.web.reactive.function.server.ServerResponse;
-
-import static org.springframework.web.reactive.function.server.RequestPredicates.*;
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.http.MediaType
+import org.springframework.web.reactive.function.server.*
 
 @Configuration(proxyBeanMethods = false)
-public class PrimesRouter {
+class PrimesRouter(private val primesHandler: PrimesHandler) {
+
     @Bean
-    public RouterFunction<ServerResponse> route(PrimesHandler primesHandler) {
+    fun route(): RouterFunction<ServerResponse> {
         return RouterFunctions.route(
-                GET("/primes")
-                        .and(accept(MediaType.APPLICATION_JSON))
-                        .and(queryParam("start", t -> true))
-                        .and(queryParam("end", t -> true)),
-                req -> {
-                    int start = Integer.parseInt(req.queryParam("start").orElse("0"));
-                    int end = Integer.parseInt(req.queryParam("end").orElse("0"));
-                    return primesHandler.fetchPrimes(start, end);
-                });
+            RequestPredicates.GET("/primes")
+                .and(RequestPredicates.accept(MediaType.APPLICATION_JSON))
+                .and(RequestPredicates.queryParam("start") { true })
+                .and(RequestPredicates.queryParam("end") { true })
+        ) { req: ServerRequest ->
+            val start = req.queryParam("start").orElse("0").toInt()
+            val end = req.queryParam("end").orElse("0").toInt()
+            primesHandler.fetchPrimes(start, end)
+        }
     }
 }

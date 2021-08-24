@@ -1,16 +1,14 @@
-package com.edoatley.primes.config;
+package com.edoatley.primes.config
 
-import com.edoatley.primes.generator.BruteForcePrimeGenerator;
-import com.edoatley.primes.generator.PrimeGenerator;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.edoatley.primes.generator.PrimeGenerator
+import com.edoatley.primes.generator.BruteForcePrimeGenerator
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 
 @Configuration
-public class PrimesConfiguration {
-
+class PrimesConfiguration {
     @Bean
-    PrimeGenerator primeGenerator() {
-        return new BruteForcePrimeGenerator();
+    fun primeGenerator(): PrimeGenerator {
+        return BruteForcePrimeGenerator()
     }
-
 }

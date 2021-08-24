@@ -1,13 +1,11 @@
-package com.edoatley.primes;
+package com.edoatley.primes
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 
 @SpringBootApplication
-public class PrimesApplication {
+class PrimesApplication
 
-	public static void main(String[] args) {
-		SpringApplication.run(PrimesApplication.class, args);
-	}
-
+fun main(args: Array<String>) {
+    runApplication<PrimesApplication>(*args)
 }

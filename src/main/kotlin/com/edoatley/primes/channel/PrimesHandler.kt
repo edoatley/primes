@@ -1,22 +1,19 @@
-package com.edoatley.primes.channel;
+package com.edoatley.primes.channel
 
-import com.edoatley.primes.generator.PrimeGenerator;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Mono;
+import lombok.RequiredArgsConstructor
+import com.edoatley.primes.generator.PrimeGenerator
+import org.springframework.http.MediaType
+import org.springframework.stereotype.Component
+import org.springframework.web.bind.annotation.RequestParam
+import reactor.core.publisher.Mono
+import org.springframework.web.reactive.function.server.ServerResponse
+import org.springframework.web.reactive.function.BodyInserters
 
 @RequiredArgsConstructor
 @Component
-public class PrimesHandler {
-
-    private final PrimeGenerator primeGenerator;
-
-    public Mono<ServerResponse> fetchPrimes(@RequestParam("start") int start, @RequestParam("end") int end) {
+class PrimesHandler(val primeGenerator: PrimeGenerator) {
+    fun fetchPrimes(@RequestParam("start") start: Int, @RequestParam("end") end: Int): Mono<ServerResponse> {
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(primeGenerator.primesInRange(start, end)));
+            .body(BodyInserters.fromValue(primeGenerator.primesInRange(start, end)))
     }
 }

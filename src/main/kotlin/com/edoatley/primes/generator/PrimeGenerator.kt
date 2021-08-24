@@ -1,20 +1,9 @@
-package com.edoatley.primes.generator;
+package com.edoatley.primes.generator
 
-import java.util.List;
-
-public interface PrimeGenerator {
-
-    List<Integer> primesInRange(int min, int max);
-
-    default void validate(int min, int max) {
-
-        if(min < 0) {
-            throw new IllegalArgumentException("Min " + min + " must be greater than or equal to zero");
-        }
-
-        if(min > max) {
-            throw new IllegalArgumentException("Max " + max + " must be greater than or equal to min " + min);
-        }
-
+interface PrimeGenerator {
+    fun primesInRange(min: Int, max: Int): List<Int>
+    fun validate(min: Int, max: Int) {
+        require(min >= 0) { "Min $min must be greater than or equal to zero" }
+        require(min <= max) { "Max $max must be greater than or equal to min $min" }
     }
 }

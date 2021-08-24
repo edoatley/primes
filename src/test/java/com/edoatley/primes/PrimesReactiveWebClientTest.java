@@ -35,7 +35,7 @@ public class PrimesReactiveWebClientTest {
 
     @Test
     @DisplayName("Request all primes from 1 to 10")
-    void saveAPersonAndGetById() {
+    void getPrimesBetweenOneAndTen() {
         final List<Integer> primesActual = webClient.get().uri(uriBuilder -> uriBuilder
                         .path("/primes")
                         .queryParam("start", 1)

@@ -1,29 +1,28 @@
-package com.edoatley.primes.generator;
+package com.edoatley.primes.generator
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors
+import java.util.stream.IntStream
+import kotlin.math.sqrt
 
-public class BruteForcePrimeGenerator implements PrimeGenerator {
-
-    @Override
-    public List<Integer> primesInRange(int min, int max) {
-        validate(min, max);
-        return IntStream.range(min, max+1)
-                .filter(this::prime)
-                .boxed()
-                .collect(Collectors.toList());
+class BruteForcePrimeGenerator : PrimeGenerator {
+    override fun primesInRange(min: Int, max: Int): List<Int> {
+        validate(min, max)
+        return IntStream.range(min, max + 1)
+            .filter { potentialPrime: Int -> prime(potentialPrime) }
+            .boxed()
+            .collect(Collectors.toList())
     }
 
-    private boolean prime(int potentialPrime) {
-        if(potentialPrime < 2) return false;
-        if(potentialPrime == 2) return true;
-        for (int i = 2; i < Math.sqrt(potentialPrime) + 1; i++) {
-            if(potentialPrime%i == 0) {
-                return false;
+    private fun prime(potentialPrime: Int): Boolean {
+        if (potentialPrime < 2) return false
+        if (potentialPrime == 2) return true
+        var i = 2
+        while (i < sqrt(potentialPrime.toDouble()) + 1) {
+            if (potentialPrime % i == 0) {
+                return false
             }
+            i++
         }
-        return true;
+        return true
     }
-
 }
