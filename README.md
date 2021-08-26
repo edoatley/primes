@@ -49,3 +49,12 @@ to this (note the if allows for a remainder of 2 now!):
 **NOT ONE** test failed that Randoop generated
 
 In contrast the real tests had the tests generating primes 1-10 failing by not counting 5 as prime (as 5%3 == 2)
+
+
+#Reports
+
+Added a few reports
+
+- Mutation testing
+- CVE scan
+- JMH report from test written to check performance of BruteForcePrimeGenerator

@@ -4,6 +4,10 @@ plugins {
 	id 'java'
 	id 'jacoco'
 	id 'io.freefair.lombok' version '6.1.0-m3'
+	id "org.sonarqube" version "3.3"
+	id 'info.solidsoft.pitest' version '1.5.1'
+	id "me.champeau.jmh" version "0.6.5"
+	id "org.owasp.dependencycheck" version "6.2.2"
 }
 
 group = 'com.edoatley'
@@ -18,7 +22,8 @@ repositories {
 dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-webflux:$springBootVersion"
 	testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-	testImplementation 'io.projectreactor:reactor-test:3.4.8'
+	testImplementation 'io.projectreactor:reactor-test:3.4.9'
+	implementation("com.thoughtworks.xstream:xstream:1.4.1")
 }
 
 tasks.withType(Test) {
@@ -30,10 +35,10 @@ jacocoTestReport {
 	sourceSets sourceSets.main
 	executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
 	reports {
-		xml.enabled false
-		csv.enabled true
-		html.destination file("${buildDir}/reports/jacoco/Html")
-		csv.destination file("${buildDir}/reports/jacoco/jacoco.csv")
+		xml.enabled true
+		html.enabled true
+		xml.destination file("${buildDir}/reports/jacoco/jacoco.xml")
+		html.destination file("${buildDir}/reports/jacoco/html")
 	}
 }
 
@@ -43,3 +48,29 @@ task generateUnitTests(type: Exec) {
 	executable './scripts/randoop.sh'
 	args = [javaClassPath, classToGenerateTestsFor]
 }
+
+pitest {
+	threads = 4
+	outputFormats = ['XML', 'HTML']
+	junit5PluginVersion = '0.12'
+	timestampedReports = false
+	reportDir=file("${buildDir}/reports/pitest/html")
+}
+
+build.dependsOn 'pitest'
+test.finalizedBy 'jacocoTestReport'
+
+jmh {
+	warmupIterations = 2
+	iterations = 5
+	fork = 1
+}
+
+dependencyCheck {
+	cve {
+		urlModified = "https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-modified.json.gz"
+	}
+}
+
+check.dependsOn 'dependencyCheckAnalyze'
+check.dependsOn 'jmh'

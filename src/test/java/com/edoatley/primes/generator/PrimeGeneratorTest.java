@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.catchThrowableOfType;
 
 public class PrimeGeneratorTest {
 
-    private final PrimeGenerator generator = new BruteForcePrimeGenerator();
+    private final PrimeGenerator generator = new ImprovedGenerator();
 
     @Test
     void givenAOneDigitRangeThatIsPrimeReturnIt() {
