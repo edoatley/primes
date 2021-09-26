@@ -73,4 +73,3 @@ dependencyCheck {
 }
 
 check.dependsOn 'dependencyCheckAnalyze'
-check.dependsOn 'jmh'
