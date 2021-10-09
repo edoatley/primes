@@ -57,8 +57,7 @@ pitest {
 	reportDir=file("${buildDir}/reports/pitest/html")
 }
 
-build.dependsOn 'pitest'
-test.finalizedBy 'jacocoTestReport'
+small changestest.finalizedBy 'jacocoTestReport'
 
 jmh {
 	warmupIterations = 2
