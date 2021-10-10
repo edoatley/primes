@@ -1,19 +1,17 @@
 plugins {
 	id 'org.springframework.boot' version "$springBootVersion"
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'io.spring.dependency-management' version "$dependencyManagementVersion"
 	id 'java'
 	id 'jacoco'
-	id 'io.freefair.lombok' version '6.1.0-m3'
-	id "org.sonarqube" version "3.3"
-	id 'info.solidsoft.pitest' version '1.5.1'
-	id "me.champeau.jmh" version "0.6.5"
-	id "org.owasp.dependencycheck" version "6.2.2"
+	id 'io.freefair.lombok' version "$lombokVersion"
+	id "org.sonarqube" version "$sonarqubeVersion"
+	id 'info.solidsoft.pitest' version "$pitestVersion"
 }
 
-group = 'com.edoatley'
-version = '0.0.1-SNAPSHOT'
+group = "$projectGroup"
+version = "$projectVersion=0.0.1-SNAPSHOT"
 
-sourceCompatibility = '11'
+sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
 	mavenCentral()
@@ -42,13 +40,6 @@ jacocoTestReport {
 	}
 }
 
-task generateUnitTests(type: Exec) {
-    def classToGenerateTestsFor =  'com.edoatley.primes.generator.BruteForcePrimeGenerator'
-	def javaClassPath = sourceSets.main.runtimeClasspath.join(':')
-	executable './scripts/randoop.sh'
-	args = [javaClassPath, classToGenerateTestsFor]
-}
-
 pitest {
 	threads = 4
 	outputFormats = ['XML', 'HTML']
@@ -58,17 +49,3 @@ pitest {
 }
 
 test.finalizedBy 'jacocoTestReport'
-
-jmh {
-	warmupIterations = 2
-	iterations = 5
-	fork = 1
-}
-
-dependencyCheck {
-	cve {
-		urlModified = "https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-modified.json.gz"
-	}
-}
-
-check.dependsOn 'dependencyCheckAnalyze'
