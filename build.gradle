@@ -1,27 +1,29 @@
 plugins {
 	id 'org.springframework.boot' version "$springBootVersion"
 	id 'io.spring.dependency-management' version "$dependencyManagementVersion"
+	id 'org.springframework.experimental.aot' version "$springAotVersion"
 	id 'java'
 	id 'jacoco'
 	id 'io.freefair.lombok' version "$lombokVersion"
 	id "org.sonarqube" version "$sonarqubeVersion"
 	id 'info.solidsoft.pitest' version "$pitestVersion"
+	id 'org.graalvm.buildtools.native' version "$graalvmBuildToolsVersion"
 }
 
 group = "$projectGroup"
-version = "$projectVersion=0.0.1-SNAPSHOT"
+version = "$projectVersion"
 
 sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/release' }
 }
 
 dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-webflux:$springBootVersion"
 	testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-	testImplementation 'io.projectreactor:reactor-test:3.4.9'
-	implementation("com.thoughtworks.xstream:xstream:1.4.1")
+	testImplementation "io.projectreactor:reactor-test:$reactorTestVersion"
 }
 
 tasks.withType(Test) {
@@ -49,3 +51,19 @@ pitest {
 }
 
 test.finalizedBy 'jacocoTestReport'
+
+nativeBuild {
+	classpath(processAotResources.outputs, compileAotJava.outputs)
+}
+
+nativeTest {
+	classpath(processAotTestResources.outputs, compileAotTestJava.outputs)
+}
+
+bootBuildImage {
+	builder = "docker.io/paketobuildpacks/builder:tiny"
+	environment = [
+			"BP_NATIVE_IMAGE" : "true"
+	]
+	verboseLogging = true
+}

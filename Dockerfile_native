@@ -1,0 +1,7 @@
+FROM ghcr.io/graalvm/graalvm-ce:latest
+#RUN addgroup spring && useradd spring -M -g spring
+#USER spring:spring
+COPY . /build
+WORKDIR /build
+RUN ./gradlew clean nativeBuild
+ENTRYPOINT ["sh","build/native/nativeBuild/primes"]
