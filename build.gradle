@@ -1,12 +1,11 @@
 plugins {
 	id 'java'
 	id 'jacoco'
-	id 'org.springframework.boot' version "2.7.3"
+	id 'org.springframework.boot' version "2.7.5"
 	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 	id 'io.freefair.lombok' version '6.5.1'
 	id 'info.solidsoft.pitest' version '1.9.0'
 	id "me.champeau.jmh" version "0.6.5"
-	id "org.owasp.dependencycheck" version "7.2.1"
 	id "com.github.joselion.pretty-jupiter" version "1.7.0"
 }
 
@@ -57,11 +56,3 @@ jmh {
 	iterations = 5
 	fork = 1
 }
-
-dependencyCheck {
-	cve {
-		urlModified = "https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-modified.json.gz"
-	}
-}
-
-check.dependsOn 'dependencyCheckAnalyze'
